@@ -21,6 +21,41 @@
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Albion Online Flip Finder — Best City Trades"/>
 <meta name="twitter:description" content="Find the best city-to-city trade opportunities in Albion Online. Sort by profit margin and maximize your silver income."/>
+<style>
+/* Calculator nav glow button */
+.nav-calc{
+  color:var(--gold)!important;
+  border:1px solid rgba(200,162,83,.35)!important;
+  background:rgba(200,162,83,.07)!important;
+  border-radius:var(--r)!important;
+  position:relative;
+  overflow:hidden;
+  animation:calcPulse 2.5s ease-in-out infinite;
+}
+.nav-calc::before{
+  content:'';
+  position:absolute;
+  inset:-1px;
+  border-radius:var(--r);
+  background:linear-gradient(90deg,transparent,rgba(200,162,83,.25),transparent);
+  transform:translateX(-100%);
+  animation:calcShine 2.5s ease-in-out infinite;
+}
+.nav-calc:hover{
+  background:rgba(200,162,83,.18)!important;
+  border-color:rgba(200,162,83,.7)!important;
+  box-shadow:0 0 16px rgba(200,162,83,.3)!important;
+  animation:none!important;
+}
+@keyframes calcPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(200,162,83,0)}
+  50%{box-shadow:0 0 10px 2px rgba(200,162,83,.2)}
+}
+@keyframes calcShine{
+  0%{transform:translateX(-100%)}
+  60%,100%{transform:translateX(100%)}
+}
+</style>
 </head>
 <body>
 <!-- Cookie Consent Banner -->
@@ -60,6 +95,7 @@
     <li><a href="index.html">Home</a></li>
     <li><a href="market.html">Market</a></li>
     <li><a href="flipfinder.html" class="active">Flip Finder</a></li>
+  <li><a href="calculator.html" class="nav-calc">⚖ Calculator</a></li>
   </ul>
 </nav>
 
@@ -317,15 +353,27 @@ function renderResults(){
     const cityPrices=results[item.id];
     if(!cityPrices)return;
     // Get all cities with sell prices
-    const entries=CITIES.map(c=>({city:c,sell:cityPrices[c]?.sell||0})).filter(e=>e.sell>0);
+    const raw=CITIES.map(c=>({city:c,sell:cityPrices[c]?.sell||0})).filter(e=>e.sell>0);
+    if(raw.length<2)return;
+
+    // ── Outlier filter ────────────────────────────────────────────────────
+    // 1. Require at least 2 data points
+    // 2. Calculate median price; discard any price > 8x or < 0.125x the median
+    //    (catches stale listings like 13.6K vs current 14M)
+    // 3. Hard cap: profit% > 400% is almost always bad data
+    const vals=raw.map(e=>e.sell).sort((a,b)=>a-b);
+    const mid=Math.floor(vals.length/2);
+    const median=vals.length%2===0?(vals[mid-1]+vals[mid])/2:vals[mid];
+    const entries=raw.filter(e=>e.sell>=median/8 && e.sell<=median*8);
     if(entries.length<2)return;
-    // Find best buy (cheapest) and best sell (most expensive)
+
     const cheapest=entries.reduce((a,b)=>b.sell<a.sell?b:a);
     const priciest=entries.reduce((a,b)=>b.sell>a.sell?b:a);
     if(cheapest.city===priciest.city)return;
     const profit=priciest.sell-cheapest.sell;
     const pct=Math.round((profit/cheapest.sell)*100);
-    if(pct<minPct||profit<=0)return;
+    // Hard cap 400% — any higher is almost certainly stale data
+    if(pct<minPct||profit<=0||pct>400)return;
     flips.push({item,buyCity:cheapest.city,buyPrice:cheapest.sell,sellCity:priciest.city,sellPrice:priciest.sell,profit,pct});
   });
 

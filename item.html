@@ -21,6 +21,41 @@
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Albion Online Item Prices — 6 City Comparison"/>
 <meta name="twitter:description" content="View detailed Albion Online item prices across all 6 cities. See best sell price, cheapest buy, and flip margin."/>
+<style>
+/* Calculator nav glow button */
+.nav-calc{
+  color:var(--gold)!important;
+  border:1px solid rgba(200,162,83,.35)!important;
+  background:rgba(200,162,83,.07)!important;
+  border-radius:var(--r)!important;
+  position:relative;
+  overflow:hidden;
+  animation:calcPulse 2.5s ease-in-out infinite;
+}
+.nav-calc::before{
+  content:'';
+  position:absolute;
+  inset:-1px;
+  border-radius:var(--r);
+  background:linear-gradient(90deg,transparent,rgba(200,162,83,.25),transparent);
+  transform:translateX(-100%);
+  animation:calcShine 2.5s ease-in-out infinite;
+}
+.nav-calc:hover{
+  background:rgba(200,162,83,.18)!important;
+  border-color:rgba(200,162,83,.7)!important;
+  box-shadow:0 0 16px rgba(200,162,83,.3)!important;
+  animation:none!important;
+}
+@keyframes calcPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(200,162,83,0)}
+  50%{box-shadow:0 0 10px 2px rgba(200,162,83,.2)}
+}
+@keyframes calcShine{
+  0%{transform:translateX(-100%)}
+  60%,100%{transform:translateX(100%)}
+}
+</style>
 </head>
 <body>
 <!-- Cookie Consent Banner -->
@@ -38,7 +73,8 @@
     <li><a href="index.html">Home</a></li>
     <li><a href="market.html">Market</a></li>
     <li><a href="flipfinder.html">Flip Finder</a></li>
-  </ul>
+  <li><a href="calculator.html" class="nav-calc">⚖ Calculator</a></li>
+</ul>
   
 </nav>
 
