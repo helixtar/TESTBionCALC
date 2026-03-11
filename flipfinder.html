@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Flip Finder — AlbionMarketCalc</title>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<meta name="keywords" content="albion online flip, albion online trading, albion city flip, albion online profit, albion market flip"/>
+<meta name="robots" content="index, follow"/>
+<meta name="author" content="AlbionMarketCalc"/>
+<link rel="canonical" href="https://albionmarketcalc.online/flipfinder.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="Albion Online Flip Finder — Best City Trades"/>
+<meta property="og:description" content="Find the best city-to-city trade opportunities in Albion Online. Sort by profit margin and maximize your silver income."/>
+<meta property="og:url" content="https://albionmarketcalc.online/flipfinder.html"/>
+<meta property="og:site_name" content="AlbionMarketCalc"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Albion Online Flip Finder — Best City Trades"/>
+<meta name="twitter:description" content="Find the best city-to-city trade opportunities in Albion Online. Sort by profit margin and maximize your silver income."/>
+</head>
+<body>
+<!-- Cookie Consent Banner -->
+<div id="cookieBanner">
+  <p>🍪 We use cookies to serve personalized ads via <strong style="color:#efefef">Google AdSense</strong> and to analyze site traffic. By clicking "Accept", you consent to our use of cookies. <a href="privacy.html">Privacy Policy</a></p>
+  <div class="cookie-btns">
+    <button id="cookieDecline" onclick="cookieChoice(false)">Decline</button>
+    <button id="cookieAccept" onclick="cookieChoice(true)">Accept All</button>
+  </div>
+</div>
+
+
+<!-- Ad gate overlay (10s countdown) -->
+<div class="ad-gate" id="adGate">
+  <div class="gate-box">
+    <div class="gate-title">◈ Flip Finder</div>
+    <div class="gate-sub" id="gateSub">Scanning all cities for the best trades...</div>
+    <div class="gate-timer" id="gateTimer">10</div>
+    <div class="gate-dots" id="gateDots"><span></span><span></span><span></span></div>
+    <div class="progress-bar"><div class="progress-fill" id="gateProg" style="width:0%"></div></div>
+    <div class="gate-ad-area">
+      <!-- Google AdSense — Large Rectangle 336x280 -->
+      <ins class="adsbygoogle"
+           style="display:inline-block;width:336px;height:280px"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+           data-ad-slot="5555555555"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    </div>
+    <div class="gate-skip" id="gateSkip">Results will appear when the timer reaches 0</div>
+    <button class="gate-go" id="gateGo" onclick="closeGate()">View Results →</button>
+  </div>
+</div>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">AlbionMarketCalc</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="market.html">Market</a></li>
+    <li><a href="flipfinder.html" class="active">Flip Finder</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  </div>
+
+  <div class="content">
+    <!-- Top banner -->
+    <div class="banner-ad" style="margin:-32px -40px 32px">
+      <div class="banner-inner">
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:728px;height:90px"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+             data-ad-slot="3333333333"></ins>
+        <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+      </div>
+    </div>
+
+    <div class="page-header">
+      <h1>◈ <span>Flip Finder</span></h1>
+      <p>Finds the most profitable city-to-city trades. Buy cheap in one city, sell high in another.</p>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <span class="ctrl-label">Category:</span>
+      <select class="sel" id="selCat">
+        <option value="all">All Items</option>
+        <option value="artifacts">Artifacts</option>
+        <option value="resources">Resources</option>
+        <option value="weapons">Weapons</option>
+        <option value="armor">Armor</option>
+        <option value="mounts">Mounts</option>
+        <option value="misc">Misc</option>
+      </select>
+      <span class="ctrl-label" style="margin-left:12px">Min Profit %:</span>
+      <select class="sel" id="selMin">
+        <option value="5">5%</option>
+        <option value="10">10%</option>
+        <option value="20" selected>20%</option>
+        <option value="30">30%</option>
+        <option value="50">50%</option>
+      </select>
+      <span class="ctrl-label" style="margin-left:12px">Sort:</span>
+      <select class="sel" id="selSort">
+        <option value="pct">Profit %</option>
+        <option value="silver">Profit Silver</option>
+      </select>
+      <div class="divider"></div>
+      <button class="btn btn-gold" id="scanBtn" onclick="startScan()">⚡ Scan Flips</button>
+    </div>
+
+    <!-- Results area -->
+    <div id="results">
+      <div class="state-box">
+        <span class="state-icon">🔍</span>
+        <p class="state-msg">Click "Scan Flips" to find the best city-to-city trades</p>
+      </div>
+    </div>
+
+    <!-- Bottom ad -->
+    <div class="banner-ad" style="margin:32px -40px 0">
+      <div class="banner-inner">
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:728px;height:90px"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+             data-ad-slot="4444444444"></ins>
+        <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+      </div>
+    </div>
+
+    <footer>
+  <p>© 2026 AlbionMarketCalc.online · Not affiliated with Sandbox Interactive GmbH</p>
+  <div style="display:flex;gap:16px;flex-wrap:wrap">
+    <a href="about.html" style="font-family:var(--FM);font-size:10px;color:var(--gold);text-decoration:none;transition:opacity .2s" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">About</a>
+    <a href="privacy.html" style="font-family:var(--FM);font-size:10px;color:var(--gold);text-decoration:none;transition:opacity .2s" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">Privacy Policy</a>
+    <a href="contact.html" style="font-family:var(--FM);font-size:10px;color:var(--gold);text-decoration:none;transition:opacity .2s" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">Contact</a>
+  </div>
+</footer>
+  </div>
+  </div>
+</div>
+
+<script>
+const CITIES=['Caerleon','Bridgewatch','Martlock','Thetford','Fort Sterling','Lymhurst'];
+const CITY_COLORS={'Caerleon':'#E05252','Bridgewatch':'#E08840','Martlock':'#5B9CF6','Thetford':'#4CAF82','Fort Sterling':'#B0B0B0','Lymhurst':'#8BC34A'};
+const ICON_BASE='https://render.albiononline.com/v1/item';
+const TIER_COLORS={1:'#888',2:'#78c278',3:'#5b9cf6',4:'#c8a253',5:'#b060e0',6:'#e05252',7:'#e08840',8:'#ff4444'};
+
+const ALL_ITEMS=[
+  {id:'T4_RUNE',name:'Rune T4',cat:'artifacts',tier:4},{id:'T5_RUNE',name:'Rune T5',cat:'artifacts',tier:5},{id:'T6_RUNE',name:'Rune T6',cat:'artifacts',tier:6},{id:'T7_RUNE',name:'Rune T7',cat:'artifacts',tier:7},{id:'T8_RUNE',name:'Rune T8',cat:'artifacts',tier:8},
+  {id:'T4_SOUL',name:'Soul T4',cat:'artifacts',tier:4},{id:'T5_SOUL',name:'Soul T5',cat:'artifacts',tier:5},{id:'T6_SOUL',name:'Soul T6',cat:'artifacts',tier:6},{id:'T7_SOUL',name:'Soul T7',cat:'artifacts',tier:7},{id:'T8_SOUL',name:'Soul T8',cat:'artifacts',tier:8},
+  {id:'T4_RELIC',name:'Relic T4',cat:'artifacts',tier:4},{id:'T5_RELIC',name:'Relic T5',cat:'artifacts',tier:5},{id:'T6_RELIC',name:'Relic T6',cat:'artifacts',tier:6},{id:'T7_RELIC',name:'Relic T7',cat:'artifacts',tier:7},{id:'T8_RELIC',name:'Relic T8',cat:'artifacts',tier:8},
+  {id:'T6_SHARD_AVALONIAN',name:'Shard T6',cat:'artifacts',tier:6},{id:'T7_SHARD_AVALONIAN',name:'Shard T7',cat:'artifacts',tier:7},{id:'T8_SHARD_AVALONIAN',name:'Shard T8',cat:'artifacts',tier:8},
+  {id:'T4_ORE',name:'Tungsten Ore',cat:'resources',tier:4},{id:'T5_ORE',name:'Steel Ore',cat:'resources',tier:5},{id:'T6_ORE',name:'Titanium Ore',cat:'resources',tier:6},{id:'T7_ORE',name:'Runite Ore',cat:'resources',tier:7},{id:'T8_ORE',name:'Meteorite Ore',cat:'resources',tier:8},
+  {id:'T4_WOOD',name:'Cedar Wood',cat:'resources',tier:4},{id:'T5_WOOD',name:'Bloodoak Wood',cat:'resources',tier:5},{id:'T6_WOOD',name:'Ashenbark Wood',cat:'resources',tier:6},{id:'T7_WOOD',name:'Whitewood',cat:'resources',tier:7},{id:'T8_WOOD',name:'Gravite Wood',cat:'resources',tier:8},
+  {id:'T4_FIBER',name:'Hemp',cat:'resources',tier:4},{id:'T5_FIBER',name:'Skyflower',cat:'resources',tier:5},{id:'T6_FIBER',name:'Redleaf Cotton',cat:'resources',tier:6},{id:'T7_FIBER',name:'Sunflax',cat:'resources',tier:7},{id:'T8_FIBER',name:'Ghost Hemp',cat:'resources',tier:8},
+  {id:'T4_HIDE',name:'Medium Hide',cat:'resources',tier:4},{id:'T5_HIDE',name:'Heavy Hide',cat:'resources',tier:5},{id:'T6_HIDE',name:'Robust Hide',cat:'resources',tier:6},{id:'T7_HIDE',name:'Thick Hide',cat:'resources',tier:7},{id:'T8_HIDE',name:'Infernal Hide',cat:'resources',tier:8},
+  {id:'T4_METALBAR',name:'Steel Bar',cat:'resources',tier:4},{id:'T5_METALBAR',name:'Steel Bar T5',cat:'resources',tier:5},{id:'T6_METALBAR',name:'Titanium Bar',cat:'resources',tier:6},{id:'T7_METALBAR',name:'Runite Bar',cat:'resources',tier:7},{id:'T8_METALBAR',name:'Meteorite Bar',cat:'resources',tier:8},
+  {id:'T4_PLANKS',name:'Oak Planks',cat:'resources',tier:4},{id:'T5_PLANKS',name:'Pine Planks',cat:'resources',tier:5},{id:'T6_PLANKS',name:'Ash Planks',cat:'resources',tier:6},{id:'T7_PLANKS',name:'White Oak Planks',cat:'resources',tier:7},{id:'T8_PLANKS',name:'Black Oak Planks',cat:'resources',tier:8},
+  {id:'T4_CLOTH',name:'Cotton Cloth',cat:'resources',tier:4},{id:'T5_CLOTH',name:'Sky Cloth',cat:'resources',tier:5},{id:'T6_CLOTH',name:'Linen',cat:'resources',tier:6},{id:'T7_CLOTH',name:'Sun Cloth',cat:'resources',tier:7},{id:'T8_CLOTH',name:'Ghost Cloth',cat:'resources',tier:8},
+  {id:'T4_LEATHER',name:'Leather',cat:'resources',tier:4},{id:'T5_LEATHER',name:'Thick Leather',cat:'resources',tier:5},{id:'T6_LEATHER',name:'Robust Leather',cat:'resources',tier:6},{id:'T7_LEATHER',name:'Full Hide Leather',cat:'resources',tier:7},{id:'T8_LEATHER',name:'Infernal Leather',cat:'resources',tier:8},
+  {id:'T5_MAIN_SWORD',name:'Broadsword T5',cat:'weapons',tier:5},{id:'T6_MAIN_SWORD',name:'Broadsword T6',cat:'weapons',tier:6},{id:'T7_MAIN_SWORD',name:'Broadsword T7',cat:'weapons',tier:7},{id:'T8_MAIN_SWORD',name:'Broadsword T8',cat:'weapons',tier:8},
+  {id:'T5_2H_SWORD',name:'Claymore T5',cat:'weapons',tier:5},{id:'T6_2H_SWORD',name:'Claymore T6',cat:'weapons',tier:6},{id:'T7_2H_SWORD',name:'Claymore T7',cat:'weapons',tier:7},{id:'T8_2H_SWORD',name:'Claymore T8',cat:'weapons',tier:8},
+  {id:'T5_MAIN_SPEAR',name:'Spear T5',cat:'weapons',tier:5},{id:'T6_MAIN_SPEAR',name:'Spear T6',cat:'weapons',tier:6},{id:'T7_MAIN_SPEAR',name:'Spear T7',cat:'weapons',tier:7},{id:'T8_MAIN_SPEAR',name:'Spear T8',cat:'weapons',tier:8},
+  {id:'T5_2H_BOW',name:'Bow T5',cat:'weapons',tier:5},{id:'T6_2H_BOW',name:'Bow T6',cat:'weapons',tier:6},{id:'T7_2H_BOW',name:'Bow T7',cat:'weapons',tier:7},{id:'T8_2H_BOW',name:'Bow T8',cat:'weapons',tier:8},
+  {id:'T5_MAIN_FIRE',name:'Fire Staff T5',cat:'weapons',tier:5},{id:'T6_MAIN_FIRE',name:'Fire Staff T6',cat:'weapons',tier:6},{id:'T7_MAIN_FIRE',name:'Fire Staff T7',cat:'weapons',tier:7},{id:'T8_MAIN_FIRE',name:'Fire Staff T8',cat:'weapons',tier:8},
+  {id:'T5_MAIN_NATURE',name:'Nature Staff T5',cat:'weapons',tier:5},{id:'T6_MAIN_NATURE',name:'Nature Staff T6',cat:'weapons',tier:6},{id:'T7_MAIN_NATURE',name:'Nature Staff T7',cat:'weapons',tier:7},{id:'T8_MAIN_NATURE',name:'Nature Staff T8',cat:'weapons',tier:8},
+  {id:'T5_ARMOR_PLATE_SET1',name:'Knight Armor T5',cat:'armor',tier:5},{id:'T6_ARMOR_PLATE_SET1',name:'Knight Armor T6',cat:'armor',tier:6},{id:'T7_ARMOR_PLATE_SET1',name:'Knight Armor T7',cat:'armor',tier:7},{id:'T8_ARMOR_PLATE_SET1',name:'Knight Armor T8',cat:'armor',tier:8},
+  {id:'T5_ARMOR_LEATHER_SET1',name:'Hunter Jacket T5',cat:'armor',tier:5},{id:'T6_ARMOR_LEATHER_SET1',name:'Hunter Jacket T6',cat:'armor',tier:6},{id:'T7_ARMOR_LEATHER_SET1',name:'Hunter Jacket T7',cat:'armor',tier:7},{id:'T8_ARMOR_LEATHER_SET1',name:'Hunter Jacket T8',cat:'armor',tier:8},
+  {id:'T5_ARMOR_CLOTH_SET1',name:'Scholar Robe T5',cat:'armor',tier:5},{id:'T6_ARMOR_CLOTH_SET1',name:'Scholar Robe T6',cat:'armor',tier:6},{id:'T7_ARMOR_CLOTH_SET1',name:'Scholar Robe T7',cat:'armor',tier:7},{id:'T8_ARMOR_CLOTH_SET1',name:'Scholar Robe T8',cat:'armor',tier:8},
+  {id:'T5_OFF_SHIELD',name:'Shield T5',cat:'armor',tier:5},{id:'T6_OFF_SHIELD',name:'Shield T6',cat:'armor',tier:6},{id:'T7_OFF_SHIELD',name:'Shield T7',cat:'armor',tier:7},{id:'T8_OFF_SHIELD',name:'Shield T8',cat:'armor',tier:8},
+  {id:'T5_MOUNT_HORSE',name:'Riding Horse T5',cat:'mounts',tier:5},{id:'T6_MOUNT_HORSE',name:'Riding Horse T6',cat:'mounts',tier:6},{id:'T7_MOUNT_HORSE',name:'Riding Horse T7',cat:'mounts',tier:7},{id:'T8_MOUNT_HORSE',name:'Riding Horse T8',cat:'mounts',tier:8},
+  {id:'T5_MOUNT_DIREWOLF',name:'Direwolf T5',cat:'mounts',tier:5},{id:'T6_MOUNT_DIREWOLF',name:'Direwolf T6',cat:'mounts',tier:6},{id:'T7_MOUNT_DIREWOLF',name:'Direwolf T7',cat:'mounts',tier:7},{id:'T8_MOUNT_DIREWOLF',name:'Direwolf T8',cat:'mounts',tier:8},
+  {id:'T5_MOUNT_BEAR',name:'Bear T5',cat:'mounts',tier:5},{id:'T6_MOUNT_BEAR',name:'Bear T6',cat:'mounts',tier:6},{id:'T7_MOUNT_BEAR',name:'Bear T7',cat:'mounts',tier:7},
+  {id:'T4_BAG',name:'Bag T4',cat:'misc',tier:4},{id:'T5_BAG',name:'Bag T5',cat:'misc',tier:5},{id:'T6_BAG',name:'Bag T6',cat:'misc',tier:6},{id:'T7_BAG',name:'Bag T7',cat:'misc',tier:7},
+  {id:'T5_POTION_HEALING',name:'Healing Potion T5',cat:'misc',tier:5},{id:'T6_POTION_HEALING',name:'Healing Potion T6',cat:'misc',tier:6},
+];
+
+function fmtS(n){if(!n||n<=0)return'—';if(n>=1e6)return(n/1e6).toFixed(2)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return n.toLocaleString()}
+
+// ── Ad Gate ──────────────────────────────────
+let gateResolve=null;
+function openGate(){
+  return new Promise(res=>{
+    gateResolve=res;
+    const gate=document.getElementById('adGate');
+    gate.classList.add('show');
+    let t=10;
+    const prog=document.getElementById('gateProg');
+    const timer=document.getElementById('gateTimer');
+    const sub=document.getElementById('gateSub');
+    const skip=document.getElementById('gateSkip');
+    const go=document.getElementById('gateGo');
+    const MSGS=[
+      '🐀 A rat is calculating your profit...',
+      '🫏 Your donkey is carrying market data...',
+      '📊 A guild accountant is crying over spreadsheets...',
+      '🤝 Negotiating with a greedy merchant...',
+      '😱 Someone just flipped your flip...',
+      '🕵️ Scanning Caerleon black market...',
+      '💰 Bribing a market trader for secret prices...',
+      '🧙 Asking a guild crafter for insider info...',
+      '🏃 Sending scouts to every city market...',
+      '🔍 Checking suspicious merchant profits...',
+      '📜 Consulting ancient trading scrolls...',
+    ];
+    prog.style.width='0%';
+    timer.textContent=t;
+    go.classList.remove('show');
+    skip.textContent='';
+    sub.textContent=MSGS[Math.floor(Math.random()*MSGS.length)];
+    let msgIdx=0;
+    const iv=setInterval(()=>{
+      t--;
+      timer.textContent=t;
+      prog.style.width=((10-t)/10*100)+'%';
+      sub.style.opacity='0';
+      setTimeout(()=>{
+        msgIdx=(msgIdx+1)%MSGS.length;
+        sub.textContent=MSGS[msgIdx];
+        sub.style.opacity='1';
+      },280);
+      if(t<=0){
+        clearInterval(iv);
+        timer.textContent='✓';
+        sub.textContent='✅ Prices loaded! Ready to flip!';
+        go.classList.add('show');
+      }
+    },1000);
+  });
+}
+function closeGate(){
+  document.getElementById('adGate').classList.remove('show');
+  if(gateResolve)gateResolve();
+}
+
+// ── Scan ─────────────────────────────────────
+let scanData=null;
+
+async function startScan(){
+  const btn=document.getElementById('scanBtn');
+  btn.disabled=true;
+  btn.textContent='Scanning...';
+
+  // Show loading
+  document.getElementById('results').innerHTML=`<div class="state-box"><div class="spinner"></div><p class="state-msg" id="scanMsg">Fetching prices from all cities...</p><div class="progress-bar" style="max-width:300px;margin:12px auto 0"><div class="progress-fill" id="scanProg" style="width:0%"></div></div></div>`;
+
+  // Open ad gate WHILE data loads in background
+  const [,data] = await Promise.all([openGate(), fetchAllPrices()]);
+  scanData = data;
+  renderResults();
+  btn.disabled=false;
+  btn.textContent='⚡ Scan Again';
+}
+
+async function fetchAllPrices(){
+  const cat=document.getElementById('selCat').value;
+  const items=cat==='all'?ALL_ITEMS:ALL_ITEMS.filter(i=>i.cat===cat);
+  const ids=items.map(i=>i.id);
+  const locStr=CITIES.map(c=>encodeURIComponent(c)).join(',');
+
+  // Batch into 40-item chunks (URL limit ~4096 chars)
+  const BATCH=40;
+  const results={};
+  items.forEach(i=>{results[i.id]={};CITIES.forEach(c=>{results[i.id][c]={sell:0,date:null}});});
+
+  const hosts=['https://west.albion-online-data.com','https://europe.albion-online-data.com','https://east.albion-online-data.com'];
+
+  for(let i=0;i<ids.length;i+=BATCH){
+    const batch=ids.slice(i,i+BATCH);
+    const pct=Math.round((i/ids.length)*100);
+    const msg=document.getElementById('scanMsg');
+    const prog=document.getElementById('scanProg');
+    if(msg)msg.textContent=`Fetching prices... (${i}/${ids.length} items)`;
+    if(prog)prog.style.width=pct+'%';
+
+    let data=null;
+    for(const host of hosts){
+      try{
+        const direct=host+'/api/v2/stats/prices/'+batch.join(',')+'?locations='+locStr+'&qualities=1';
+        const proxy='https://corsproxy.io/?'+encodeURIComponent(direct);
+        for(const url of[direct,proxy]){
+          try{
+            const r=await fetch(url);
+            if(!r.ok)continue;
+            const raw=await r.text();
+            try{data=JSON.parse(raw);}catch(e){const m=JSON.parse(raw);data=m.contents?JSON.parse(m.contents):m;}
+            if(data)break;
+          }catch(e){continue;}
+        }
+        if(data)break;
+      }catch(e){continue;}
+    }
+    if(!data)continue;
+
+    data.forEach(d=>{
+      if(!results[d.item_id])return;
+      const cityKey=CITIES.find(c=>c.toLowerCase()===(d.city||'').toLowerCase());
+      if(cityKey&&d.sell_price_min>0)results[d.item_id][cityKey]={sell:d.sell_price_min,date:d.sell_price_min_date};
+    });
+  }
+  return{results,items};
+}
+
+function renderResults(){
+  if(!scanData)return;
+  const {results,items}=scanData;
+  const minPct=parseInt(document.getElementById('selMin').value)||20;
+  const sortBy=document.getElementById('selSort').value;
+
+  // Build flip opportunities
+  const flips=[];
+  items.forEach(item=>{
+    const cityPrices=results[item.id];
+    if(!cityPrices)return;
+    // Get all cities with sell prices
+    const entries=CITIES.map(c=>({city:c,sell:cityPrices[c]?.sell||0})).filter(e=>e.sell>0);
+    if(entries.length<2)return;
+    // Find best buy (cheapest) and best sell (most expensive)
+    const cheapest=entries.reduce((a,b)=>b.sell<a.sell?b:a);
+    const priciest=entries.reduce((a,b)=>b.sell>a.sell?b:a);
+    if(cheapest.city===priciest.city)return;
+    const profit=priciest.sell-cheapest.sell;
+    const pct=Math.round((profit/cheapest.sell)*100);
+    if(pct<minPct||profit<=0)return;
+    flips.push({item,buyCity:cheapest.city,buyPrice:cheapest.sell,sellCity:priciest.city,sellPrice:priciest.sell,profit,pct});
+  });
+
+  // Sort
+  flips.sort((a,b)=>sortBy==='silver'?b.profit-a.profit:b.pct-a.pct);
+
+  const count=flips.length;
+  if(count===0){
+    document.getElementById('results').innerHTML=`<div class="state-box"><span class="state-icon">📭</span><p class="state-msg">No flips found above ${minPct}% profit. Try lowering the minimum.</p></div>`;
+    return;
+  }
+
+  const rows=flips.map((f,i)=>{
+    const isRainbow=f.pct>=70;
+    const pctCls=f.pct>=50?'pct-high':f.pct>=25?'pct-med':'pct-low';
+    const buyCol=CITY_COLORS[f.buyCity]||'#888';
+    const sellCol=CITY_COLORS[f.sellCity]||'#888';
+    const tc=TIER_COLORS[f.item.tier]||'#888';
+    return `<tr class="${isRainbow?'rainbow-row':''}">
+      <td style="width:36px;text-align:center;font-family:var(--FM);font-size:12px;color:var(--tm)">${i+1}</td>
+      <td>
+        <div class="item-cell">
+          <div class="item-icon">
+            <img src="${ICON_BASE}/${f.item.id}.png?size=64&quality=1" alt="" onerror="this.style.display='none'"/>
+          </div>
+          <div>
+            <div class="item-name"><span class="tier-dot" style="background:${tc}"></span>${f.item.name}${isRainbow?'<span class="rainbow-badge">🌈 70%+</span>':''}</div>
+            <div class="item-id">${f.item.id}</div>
+          </div>
+        </div>
+      </td>
+      <td>
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+          <span class="chip"><span class="chip-dot" style="background:${buyCol}"></span>${f.buyCity}</span>
+          <span class="arrow-cell">→</span>
+          <span class="chip"><span class="chip-dot" style="background:${sellCol}"></span>${f.sellCity}</span>
+        </div>
+      </td>
+      <td class="price-cell">${fmtS(f.buyPrice)}</td>
+      <td class="price-cell">${fmtS(f.sellPrice)}</td>
+      <td class="profit-cell">
+        <div class="profit-num">+${fmtS(f.profit)}</div>
+        <span class="profit-pct ${pctCls}">+${f.pct}%</span>
+      </td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('results').innerHTML=`
+    <div class="results-header">
+      <span class="results-title">Found <strong style="color:var(--tx)">${count}</strong> profitable trades</span>
+      <span class="results-count">Min ${minPct}% · Sorted by ${document.getElementById('selSort').value==='pct'?'Profit %':'Silver'}</span>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="flip-table">
+        <thead><tr>
+          <th>#</th>
+          <th>Item</th>
+          <th>Route</th>
+          <th class="r">Buy Price</th>
+          <th class="r">Sell Price</th>
+          <th class="r">Profit</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+</script>
+<script>
+// Cookie Consent
+(function(){
+  const key='amc_cookie_consent';
+  const val=localStorage.getItem(key);
+  if(val===null){
+    setTimeout(()=>document.getElementById('cookieBanner').classList.add('show'),800);
+  }
+})();
+function cookieChoice(accepted){
+  localStorage.setItem('amc_cookie_consent', accepted?'accepted':'declined');
+  const b=document.getElementById('cookieBanner');
+  b.style.transform='translateY(100%)';
+  setTimeout(()=>b.style.display='none',400);
+}
+</script>
+<script>
+// ── Cookie Consent ────────────────────────
+(function(){
+  const KEY = 'ck_consent_v1';
+  const stored = localStorage.getItem(KEY);
+  if(!stored) {
+    // Show banner after short delay
+    setTimeout(() => document.getElementById('cookie-banner').classList.remove('hidden'), 800);
+  } else {
+    const prefs = JSON.parse(stored);
+    if(prefs.ads) loadAds();
+  }
+})();
+
+function acceptCookies(){
+  const prefs = {essential:true, analytics:true, ads:true, functional:true};
+  localStorage.setItem('ck_consent_v1', JSON.stringify(prefs));
+  document.getElementById('cookie-banner').classList.add('hidden');
+  document.getElementById('ck-modal').classList.remove('show');
+  loadAds();
+}
+
+function declineCookies(){
+  const prefs = {essential:true, analytics:false, ads:false, functional:false};
+  localStorage.setItem('ck_consent_v1', JSON.stringify(prefs));
+  document.getElementById('cookie-banner').classList.add('hidden');
+  document.getElementById('ck-modal').classList.remove('show');
+}
+
+function openCkModal(){
+  const stored = localStorage.getItem('ck_consent_v1');
+  if(stored){
+    const p = JSON.parse(stored);
+    document.getElementById('ck-analytics').checked = p.analytics !== false;
+    document.getElementById('ck-ads').checked = p.ads !== false;
+    document.getElementById('ck-func').checked = p.functional !== false;
+  }
+  document.getElementById('ck-modal').classList.add('show');
+}
+
+function saveCkSettings(){
+  const prefs = {
+    essential: true,
+    analytics: document.getElementById('ck-analytics').checked,
+    ads: document.getElementById('ck-ads').checked,
+    functional: document.getElementById('ck-func').checked
+  };
+  localStorage.setItem('ck_consent_v1', JSON.stringify(prefs));
+  document.getElementById('cookie-banner').classList.add('hidden');
+  document.getElementById('ck-modal').classList.remove('show');
+  if(prefs.ads) loadAds();
+}
+
+function loadAds(){
+  // AdSense loads automatically via the script tag - consent recorded
+  if(window.adsbygoogle) {
+    try{ (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){}
+  }
+}
+
+// Close modal on backdrop click
+document.getElementById('ck-modal').addEventListener('click', function(e){
+  if(e.target === this) this.classList.remove('show');
+});
+
+</script>
+</body>
+</html>
