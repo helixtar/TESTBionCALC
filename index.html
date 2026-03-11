@@ -76,7 +76,8 @@
     <li><a href="index.html" class="active">Home</a></li>
     <li><a href="market.html">Market</a></li>
     <li><a href="flipfinder.html">Flip Finder</a></li>
-  <li><a href="calculator.html" class="nav-calc">⚖ Calculator</a></li>
+    <li><a href="calculator.html" class="nav-calc">⚖ Calculator</a></li>
+    <li><a href="craft.html" class="nav-calc">🔥 Best Craft</a></li>
   </ul>
 </nav>
 
@@ -124,8 +125,11 @@
 </div>
 
 <div class="quick-section">
-  <div class="wrap" style="padding-top:40px">
-    <div class="quick-grid">
+  <div class="wrap" style="padding-top:40px;padding-bottom:52px">
+
+    <div style="font-family:var(--FT);font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--td);margin-bottom:14px">⚡ Tools</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
       <a href="market.html" class="qc">
         <div class="qc-ico">📊</div>
         <div><div class="qc-title">Market Browser</div><div class="qc-desc">All items with icons, live prices and 6-city comparison.</div></div>
@@ -136,7 +140,30 @@
         <div><div class="qc-title">Flip Finder</div><div class="qc-desc">Best city-to-city trades sorted by profit margin.</div></div>
         <span class="qc-arr">→</span>
       </a>
+      <a href="calculator.html" class="qc">
+        <div class="qc-ico">⚖️</div>
+        <div><div class="qc-title">Market Calculator</div><div class="qc-desc">Enter buy/sell price and tax to calculate exact profit.</div></div>
+        <span class="qc-arr">→</span>
+      </a>
+      <a href="craft.html" class="qc" style="border-color:rgba(200,162,83,.2);background:rgba(200,162,83,.03)">
+        <div class="qc-ico" style="background:rgba(200,162,83,.1);border-color:rgba(200,162,83,.25)">🔥</div>
+        <div><div class="qc-title" style="color:var(--gold)">Most Profitable Craft</div><div class="qc-desc">Live material cost vs. sell price ranked by margin.</div></div>
+        <span class="qc-arr" style="color:var(--gold)">→</span>
+      </a>
     </div>
+
+    <!-- Live Best Craft mini card -->
+    <div id="craftMiniCard" style="background:var(--s1);border:1px solid rgba(200,162,83,.25);border-radius:var(--rl);overflow:hidden">
+      <div style="background:var(--s2);padding:11px 18px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
+        <span style="font-family:var(--FT);font-size:12px;font-weight:700;color:var(--gold)">🔥 Most Profitable Craft Today</span>
+        <span style="font-family:var(--FM);font-size:9px;color:var(--tm);letter-spacing:.15em">CAERLEON · LIVE</span>
+      </div>
+      <div id="craftMiniBody" style="padding:16px 18px;display:flex;align-items:center;gap:14px">
+        <div style="display:flex;align-items:center;justify-content:center;width:18px;height:18px;border:2px solid var(--bd);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0"></div>
+        <span style="font-family:var(--FM);font-size:11px;color:var(--tm)">Scanning crafts...</span>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -249,7 +276,70 @@ async function apiFetchT(path,ms=7000){
 }
 apiFetch=apiFetchT;
 
-document.addEventListener('DOMContentLoaded',()=>{buildTabs();loadPrices();loadTicker();});
+// ── Best Craft mini widget ─────────────────────────────────────────────────
+const CRAFT_RECIPES=[
+  {id:'T6_MAIN_SWORD',   name:'Broadsword T6',   mats:[{id:'T6_METALBAR',qty:16},{id:'T5_METALBAR',qty:4}]},
+  {id:'T7_MAIN_SWORD',   name:'Broadsword T7',   mats:[{id:'T7_METALBAR',qty:20},{id:'T6_METALBAR',qty:4}]},
+  {id:'T8_MAIN_SWORD',   name:'Broadsword T8',   mats:[{id:'T8_METALBAR',qty:24},{id:'T7_METALBAR',qty:4}]},
+  {id:'T6_2H_BOW',       name:'Bow T6',          mats:[{id:'T6_PLANKS',qty:16},{id:'T5_PLANKS',qty:4}]},
+  {id:'T7_2H_BOW',       name:'Bow T7',          mats:[{id:'T7_PLANKS',qty:20},{id:'T6_PLANKS',qty:4}]},
+  {id:'T8_2H_BOW',       name:'Bow T8',          mats:[{id:'T8_PLANKS',qty:24},{id:'T7_PLANKS',qty:4}]},
+  {id:'T6_MAIN_FIRE',    name:'Fire Staff T6',   mats:[{id:'T6_PLANKS',qty:16},{id:'T5_PLANKS',qty:4}]},
+  {id:'T7_MAIN_FIRE',    name:'Fire Staff T7',   mats:[{id:'T7_PLANKS',qty:20},{id:'T6_PLANKS',qty:4}]},
+  {id:'T6_ARMOR_PLATE_SET1',name:'Knight Armor T6',mats:[{id:'T6_METALBAR',qty:16},{id:'T5_METALBAR',qty:4}]},
+  {id:'T7_ARMOR_PLATE_SET1',name:'Knight Armor T7',mats:[{id:'T7_METALBAR',qty:20},{id:'T6_METALBAR',qty:4}]},
+  {id:'T6_ARMOR_LEATHER_SET1',name:'Hunter Jacket T6',mats:[{id:'T6_LEATHER',qty:16},{id:'T5_LEATHER',qty:4}]},
+  {id:'T7_ARMOR_LEATHER_SET1',name:'Hunter Jacket T7',mats:[{id:'T7_LEATHER',qty:20},{id:'T6_LEATHER',qty:4}]},
+  {id:'T6_METALBAR',     name:'Titanium Bar T6', mats:[{id:'T6_ORE',qty:2},{id:'T5_ORE',qty:1}]},
+  {id:'T7_METALBAR',     name:'Runite Bar T7',   mats:[{id:'T7_ORE',qty:2},{id:'T6_ORE',qty:1}]},
+  {id:'T6_PLANKS',       name:'Whitewood T6',    mats:[{id:'T6_WOOD',qty:2},{id:'T5_WOOD',qty:1}]},
+  {id:'T7_PLANKS',       name:'Gravite T7',      mats:[{id:'T7_WOOD',qty:2},{id:'T6_WOOD',qty:1}]},
+  {id:'T6_CLOTH',        name:'Redleaf Cloth T6',mats:[{id:'T6_FIBER',qty:2},{id:'T5_FIBER',qty:1}]},
+  {id:'T7_CLOTH',        name:'Sunflax Cloth T7',mats:[{id:'T7_FIBER',qty:2},{id:'T6_FIBER',qty:1}]},
+];
+
+async function loadCraftMini(){
+  const allIds=new Set();
+  CRAFT_RECIPES.forEach(r=>{allIds.add(r.id);r.mats.forEach(m=>allIds.add(m.id));});
+  const ids=[...allIds];
+  const priceMap={};
+  for(let i=0;i<ids.length;i+=40){
+    const batch=ids.slice(i,i+40);
+    const d=await apiFetch(`/api/v2/stats/prices/${batch.join(',')}?locations=Caerleon&qualities=1`);
+    if(d)d.forEach(row=>{if(row.sell_price_min>0)priceMap[row.item_id]=row.sell_price_min;});
+  }
+  const results=[];
+  CRAFT_RECIPES.forEach(r=>{
+    const sell=priceMap[r.id]; if(!sell||sell<=0)return;
+    let cost=0,ok=true;
+    r.mats.forEach(m=>{const p=priceMap[m.id];if(!p||p<=0){ok=false;return;}cost+=p*m.qty;});
+    if(!ok||cost<=0)return;
+    const profit=sell-cost, margin=(profit/cost)*100;
+    if(margin>500||margin<0)return;
+    results.push({r,sell,cost,profit,margin});
+  });
+  results.sort((a,b)=>b.margin-a.margin);
+  const el=document.getElementById('craftMiniBody');
+  if(!results.length){
+    el.innerHTML=`<span style="font-family:var(--FM);font-size:11px;color:var(--tm)">No data available right now.</span>`;
+    return;
+  }
+  const best=results[0];
+  const pctColor=best.margin>30?'var(--green)':best.margin>10?'var(--gold)':'var(--red)';
+  el.innerHTML=`
+    <img src="${ICON}/${best.r.id}.png?size=64&quality=1" style="width:44px;height:44px;border-radius:7px;border:1px solid rgba(200,162,83,.2);flex-shrink:0" onerror="this.style.display='none'"/>
+    <div style="flex:1;min-width:0">
+      <div style="font-family:var(--FT);font-size:13px;font-weight:700;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${best.r.name}</div>
+      <div style="font-family:var(--FM);font-size:10px;color:var(--td)">Mat cost: <strong style="color:var(--tx)">${fmtS(best.cost)}</strong> · Sell: <strong style="color:var(--tx)">${fmtS(best.sell)}</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0">
+      <div style="font-family:var(--FM);font-size:18px;font-weight:700;color:${pctColor}">+${best.margin.toFixed(1)}%</div>
+      <div style="font-family:var(--FM);font-size:10px;color:var(--td)">+${fmtS(best.profit)} profit</div>
+    </div>
+    <a href="craft.html" style="font-family:var(--FM);font-size:10px;color:var(--gold);text-decoration:none;flex-shrink:0;padding:6px 12px;border:1px solid rgba(200,162,83,.3);border-radius:var(--r);transition:all .2s" onmouseover="this.style.background='rgba(200,162,83,.08)'" onmouseout="this.style.background='transparent'">See all →</a>`;
+}
+
+document.addEventListener('DOMContentLoaded',()=>{buildTabs();loadPrices();loadTicker();loadCraftMini();});
 </script>
 <script>
 // Cookie Consent
