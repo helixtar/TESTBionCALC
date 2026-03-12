@@ -20,13 +20,13 @@
 <link rel="stylesheet" href="styles.css">
 <style>
 /* Craft-specific */
-.craft-header{padding:40px 0 28px}
+.craft-header{padding:44px 0 32px}
 .craft-header h1{font-family:var(--FD);font-size:clamp(22px,4vw,38px);font-weight:700;margin-bottom:6px}
 .craft-header h1 em{font-style:normal;color:var(--gold)}
 .craft-header p{color:var(--td);font-size:13px}
 
 /* Filter bar */
-.filter-bar{display:flex;gap:8px;align-items:center;margin-bottom:18px;flex-wrap:wrap;background:var(--s1);border:1px solid var(--bd);border-radius:var(--rl);padding:12px 16px}
+.filter-bar{display:flex;gap:10px;align-items:center;margin-bottom:20px;flex-wrap:wrap;background:var(--s1);border:1px solid var(--bd);border-radius:var(--rl);padding:14px 20px}
 .filter-label{font-family:var(--FM);font-size:9px;letter-spacing:.25em;color:var(--tm);text-transform:uppercase;white-space:nowrap}
 .filter-sel{font-family:var(--FM);font-size:12px;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--tx);padding:7px 10px;outline:none;cursor:pointer}
 .filter-div{flex:1}
@@ -35,11 +35,17 @@
 .scan-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
 /* Top winner card */
+.wrap{max-width:1280px!important}
+/* Force table minimum width so columns breathe on PC */
+.ctbl{min-width:820px}
+.craft-table-wrap{overflow:visible}
+#craftResults{overflow-x:auto}
+
 .winner-card{background:var(--s1);border:1px solid var(--bg-gold);border-radius:var(--rl);padding:24px;margin-bottom:20px;display:none;position:relative;overflow:hidden}
 .winner-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(200,162,83,.05),transparent);pointer-events:none}
 .winner-label{font-family:var(--FM);font-size:9px;letter-spacing:.4em;color:var(--gold-d);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .winner-label::before{content:'🔥'}
-.winner-inner{display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center}
+.winner-inner{display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center}
 .winner-icon{width:72px;height:72px;background:var(--s3);border-radius:10px;border:1px solid var(--bg-gold);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
 .winner-icon img{width:64px;height:64px;object-fit:contain}
 .winner-name{font-family:var(--FD);font-size:18px;font-weight:700;margin-bottom:4px;color:var(--tx)}
@@ -53,28 +59,28 @@
 
 /* Craft table */
 .craft-table-wrap{background:var(--s1);border:1px solid var(--bd);border-radius:var(--rl);overflow:hidden}
-.craft-table-head{background:var(--s2);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd)}
-.craft-table-title{font-family:var(--FT);font-size:13px;font-weight:700}
-.craft-count{font-family:var(--FM);font-size:10px;color:var(--tm)}
+.craft-table-head{background:var(--s2);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd)}
+.craft-table-title{font-family:var(--FT);font-size:15px;font-weight:700;letter-spacing:.04em}
+.craft-count{font-family:var(--FM);font-size:11px;color:var(--td)}
 .ctbl{width:100%;border-collapse:collapse}
-.ctbl th{font-family:var(--FM);font-size:8px;letter-spacing:.2em;color:var(--tm);text-transform:uppercase;padding:9px 14px;border-bottom:1px solid var(--bd);text-align:left;white-space:nowrap}
+.ctbl th{font-family:var(--FM);font-size:9px;letter-spacing:.18em;color:var(--tm);text-transform:uppercase;padding:13px 18px;border-bottom:1px solid var(--bd);text-align:left;white-space:nowrap}
 .ctbl th.r{text-align:right}
-.ctbl td{padding:11px 14px;border-bottom:1px solid #111;vertical-align:middle;font-size:13px}
+.ctbl td{padding:15px 18px;border-bottom:1px solid #111;vertical-align:middle;font-size:13px}
 .ctbl tr:last-child td{border-bottom:none}
 .ctbl tr:hover td{background:rgba(255,255,255,.018)}
 .ctbl tr.top1 td{background:rgba(200,162,83,.04)}
 .item-cell{display:flex;align-items:center;gap:10px}
-.ci-icon{width:36px;height:36px;border-radius:6px;background:var(--s3);overflow:hidden;flex-shrink:0;border:1px solid var(--bd);display:flex;align-items:center;justify-content:center}
-.ci-icon img{width:32px;height:32px;object-fit:contain}
-.ci-name{font-family:var(--FT);font-size:12px;font-weight:600;margin-bottom:1px}
+.ci-icon{width:44px;height:44px;border-radius:8px;background:var(--s3);overflow:hidden;flex-shrink:0;border:1px solid var(--bd);display:flex;align-items:center;justify-content:center}
+.ci-icon img{width:38px;height:38px;object-fit:contain}
+.ci-name{font-family:var(--FT);font-size:13px;font-weight:700;margin-bottom:2px}
 .ci-id{font-family:var(--FM);font-size:9px;color:var(--tm)}
-.mat-mini{font-family:var(--FM);font-size:10px;color:var(--td);line-height:1.7}
+.mat-mini{font-family:var(--FM);font-size:10px;color:var(--td);line-height:1.9}
 .price-cell{font-family:var(--FM);font-size:12px;font-weight:600;text-align:right}
 .profit-cell{text-align:right}
-.profit-silver{font-family:var(--FM);font-size:12px;font-weight:700}
+.profit-silver{font-family:var(--FM);font-size:13px;font-weight:700}
 .profit-silver.pos{color:var(--green)}
 .profit-silver.neg{color:var(--red)}
-.profit-pct-badge{font-family:var(--FM);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;display:inline-block;margin-top:2px}
+.profit-pct-badge{font-family:var(--FM);font-size:11px;font-weight:700;padding:3px 10px;border-radius:5px;display:inline-block;margin-top:3px}
 .pct-high{background:rgba(76,175,130,.15);color:var(--green);border:1px solid rgba(76,175,130,.3)}
 .pct-med{background:rgba(200,162,83,.12);color:var(--gold);border:1px solid rgba(200,162,83,.25)}
 .pct-low{background:rgba(224,82,82,.1);color:var(--red);border:1px solid rgba(224,82,82,.25)}
@@ -95,11 +101,55 @@
 .note-box{background:rgba(200,162,83,.04);border:1px solid rgba(200,162,83,.14);border-radius:var(--r);padding:12px 16px;margin-top:16px;font-family:var(--FM);font-size:10px;color:var(--td);line-height:1.7}
 .note-box strong{color:var(--gold)}
 
-.craft-nav-glow{color:var(--gold)!important;border:1px solid rgba(200,162,83,.35)!important;background:rgba(200,162,83,.07)!important;animation:calcPulse 2.5s ease-in-out infinite}
-.craft-nav-glow:hover{background:rgba(200,162,83,.18)!important;box-shadow:0 0 16px rgba(200,162,83,.3)!important;animation:none!important}
-@keyframes calcPulse{0%,100%{box-shadow:0 0 0 0 rgba(200,162,83,0)}50%{box-shadow:0 0 10px 2px rgba(200,162,83,.2)}}
+.nav-calc{
+  color:var(--gold)!important;
+  border:1px solid rgba(200,162,83,.35)!important;
+  background:rgba(200,162,83,.07)!important;
+  border-radius:var(--r)!important;
+  position:relative;
+  overflow:hidden;
+}
+.nav-calc::before{
+  content:'';
+  position:absolute;
+  top:0;bottom:0;left:-60%;
+  width:40%;
+  background:linear-gradient(90deg,transparent,rgba(200,162,83,.35),transparent);
+  animation:calcShine 2.7s ease-in-out infinite;
+  pointer-events:none;
+}
+.nav-calc:hover{
+  background:rgba(200,162,83,.18)!important;
+  border-color:rgba(200,162,83,.7)!important;
+  box-shadow:0 0 14px rgba(200,162,83,.28)!important;
+}
+.nav-calc:hover::before{animation-play-state:paused}
+@keyframes calcShine{
+  0%,74%{transform:translateX(-10%);opacity:0}
+  75%{opacity:1}
+  100%{transform:translateX(340%);opacity:0}
+}50%{box-shadow:0 0 10px 2px rgba(200,162,83,.2)}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+.gold-btn{
+  font-family:var(--FM);
+  font-size:10px;
+  padding:6px 14px;
+  border-radius:var(--r);
+  border:1px solid rgba(200,162,83,.6);
+  background:linear-gradient(135deg,#C8A253,#8A5E24);
+  color:#fff;
+  cursor:pointer;
+  transition:all .2s;
+}
+
+.gold-btn:hover{
+  background:linear-gradient(135deg,#FFD700,#C8A253);
+  box-shadow:0 0 10px rgba(200,162,83,.5);
+  transform:translateY(-1px);
+}
+
 </style>
 </head>
 <body>
@@ -147,11 +197,9 @@
   </div>
 
   <!-- Ad top -->
-  <div class="ad-banner" style="margin-bottom:20px">
-    <div class="ad-inner">
-      <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="3333333333"></ins>
-      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
-    </div>
+  <div style="margin-bottom:24px">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="3333333333" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
   </div>
 
   <!-- Filter bar -->
@@ -208,8 +256,11 @@
     </div>
   </div>
 
+  <!-- TOP scroll anchor + page info -->
+  <div id="craft-pag-top" style="margin-bottom:8px"></div>
+
   <!-- Results table -->
-  <div class="craft-table-wrap">
+  <div class="craft-table-wrap" id="craftTable">
     <div class="craft-table-head">
       <span class="craft-table-title">Crafting Profit Rankings</span>
       <span class="craft-count" id="craftCount">—</span>
@@ -222,6 +273,9 @@
     </div>
   </div>
 
+  <!-- BOTTOM pagination -->
+  <div id="craft-pag-bot" style="margin-top:8px"></div>
+
   <div class="note-box">
     <strong>Note:</strong> Prices are from the Albion Online Data Project community API and may be slightly delayed.
     Material costs assume buying from the market (sell price). Craft does not include <strong>focus cost</strong> or <strong>return rate</strong>.
@@ -229,11 +283,9 @@
   </div>
 
   <!-- Ad bottom -->
-  <div class="ad-banner" style="margin:20px 0">
-    <div class="ad-inner">
-      <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="4444444444"></ins>
-      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
-    </div>
+  <div style="margin:24px 0">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="4444444444" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
   </div>
 </div>
 
@@ -410,6 +462,8 @@ async function runCraftScan(){
 
   if(results.length===0){
     document.getElementById('craftResults').innerHTML=`<div class="state-box"><span class="state-icon">📭</span><p class="state-msg">No craft data found for ${city}. Try a different city or check back later.</p></div>`;
+    document.getElementById('craft-pag-top').innerHTML='';
+    document.getElementById('craft-pag-bot').innerHTML='';
     return;
   }
 
@@ -454,7 +508,7 @@ async function runCraftScan(){
     <div style="overflow-x:auto">
       <table class="ctbl">
         <thead><tr>
-          <th style="width:36px">#</th>
+          <th style="width:44px">#</th>
           <th>Item</th>
           <th>Materials</th>
           <th class="r">Mat Cost</th>
@@ -464,6 +518,22 @@ async function runCraftScan(){
         <tbody>${rows}</tbody>
       </table>
     </div>`;
+
+  // Build a simple page info / scroll nav for dual scroll
+  // Top nav — scroll DOWN to table
+  document.getElementById('craft-pag-top').innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;font-family:var(--FM);font-size:10px;color:var(--tm)">
+    <span>${results.length} crafts ranked by margin</span>
+    <button class="gold-btn"
+	onclick="document.getElementById('craft-pag-bot').scrollIntoView({behavior:'smooth',block:'start'})" style="font-family:var(--FM);font-size:10px;padding:5px 12px;border:1px solid var(--bd);border-radius:var(--r);background:var(--s2);color:var(--td);cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='rgba(200,162,83,.4)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--bd)';this.style.color='var(--td)'">&#8681; Jump to Results</button>
+  </div>`;
+  // Bottom nav — scroll UP to top of page
+  document.getElementById('craft-pag-bot').innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;font-family:var(--FM);font-size:10px;color:var(--tm)">
+    <span>${results.length} crafts ranked by margin</span>
+    <button onclick="window.scrollTo({top:0,behavior:'smooth'})" style="font-family:var(--FM);font-size:10px;padding:5px 12px;border:1px solid var(--bd);border-radius:var(--r);background:var(--s2);color:var(--td);cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='rgba(200,162,83,.4)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--bd)';this.style.color='var(--td)'">&#8679; Back to Top</button>
+  </div>`;
+
+  // Scroll to results automatically
+  setTimeout(()=>document.getElementById('craft-pag-top').scrollIntoView({behavior:'smooth',block:'start'}), 100);
 }
 
 // Cookie consent

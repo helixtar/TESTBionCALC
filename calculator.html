@@ -102,6 +102,34 @@
 
 @keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.nav-calc{
+  color:var(--gold)!important;
+  border:1px solid rgba(200,162,83,.35)!important;
+  background:rgba(200,162,83,.07)!important;
+  border-radius:var(--r)!important;
+  position:relative;
+  overflow:hidden;
+}
+.nav-calc::before{
+  content:'';
+  position:absolute;
+  top:0;bottom:0;left:-60%;
+  width:40%;
+  background:linear-gradient(90deg,transparent,rgba(200,162,83,.35),transparent);
+  animation:calcShine 2.7s ease-in-out infinite;
+  pointer-events:none;
+}
+.nav-calc:hover{
+  background:rgba(200,162,83,.18)!important;
+  border-color:rgba(200,162,83,.7)!important;
+  box-shadow:0 0 14px rgba(200,162,83,.28)!important;
+}
+.nav-calc:hover::before{animation-play-state:paused}
+@keyframes calcShine{
+  0%,74%{transform:translateX(-10%);opacity:0}
+  75%{opacity:1}
+  100%{transform:translateX(340%);opacity:0}
+}
 </style>
 </head>
 <body>
@@ -297,19 +325,17 @@ function fmtFull(n){return(n<0?'-':'')+Math.abs(Math.round(n)).toLocaleString()+
 function setTax(v){
   document.getElementById('taxRate').value=v;
   document.querySelectorAll('.tax-preset').forEach(b=>b.classList.toggle('active', parseFloat(b.textContent)===v));
-  liveCalc();
 }
 
 function liveCalc(){
+  // Only silently validate — don't auto-calculate. User presses the button.
+  // (prevents result showing before user is done typing)
   const buy=parseFloat(document.getElementById('buyPrice').value)||0;
   const sell=parseFloat(document.getElementById('sellPrice').value)||0;
-  const amt=Math.max(1,parseInt(document.getElementById('amount').value)||1);
-  const tax=parseFloat(document.getElementById('taxRate').value)||6;
-  if(!buy||!sell)return;
-  calculate();
+  if(!buy||!sell) document.getElementById('resultBox').classList.remove('show');
 }
 
-function calculate(){
+function calculate(fromBtn){
   const buy=parseFloat(document.getElementById('buyPrice').value);
   const sell=parseFloat(document.getElementById('sellPrice').value);
   const amt=Math.max(1,parseInt(document.getElementById('amount').value)||1);
@@ -317,6 +343,14 @@ function calculate(){
 
   if(!buy||!sell||buy<=0||sell<=0){
     document.getElementById('resultBox').classList.remove('show');
+    // Shake the inputs to hint something's missing
+    ['buyPrice','sellPrice'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(!(parseFloat(el.value)>0)){
+        el.style.borderColor='var(--red)';
+        setTimeout(()=>el.style.borderColor='',1200);
+      }
+    });
     return;
   }
 
@@ -385,6 +419,11 @@ function calculate(){
   } else {
     tip.classList.remove('show');
   }
+
+  // Scroll result into view smoothly
+  setTimeout(()=>{
+    document.getElementById('resultBox').scrollIntoView({behavior:'smooth', block:'nearest'});
+  }, 60);
 }
 
 // Cookie consent
